@@ -50,8 +50,12 @@ class ElasticSearchService:
         "includes": ["id", "title"]
       },
     )
-
     result = []
+    response_time = response['took']
+
     for hit in response["hits"]["hits"]:
         result.append(hit["_source"]['title'])
-    return result
+    return {
+      "response_time": response_time,
+      "result": result
+    }

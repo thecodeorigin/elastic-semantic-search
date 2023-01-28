@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elasticsearch Demo</title>
+  </head>
+  <body>
+    <div>
+      <form>
+        <div>
+          <label for="query">Query:</label>
+          <input type="text" id="query" name="query" /><br /><br />
+        </div>
+        <div>
+          <label for="method">Search method:</label>
+          <select name="method" id="method">
+            <option value="sts">Semantic search</option>
+            <option value="fts">Full-text search</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div>
+      <h3>Response time:</h3>
+      <span class="response-time"></span>
+      <h3>Results:</h3>
+      <ul class="results"></ul>
+    </div>
+  </body>
+  <script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = document.querySelector("#query").value;
+      const method = document.querySelector("#method").value;
+      const url = `http://localhost:5000/search?q=${query}&method=${method}`;
+      // Measure time taken to fetch data
+      const start = performance.now();
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          // Calculate response time
+          const end = performance.now();
+          const html = `${end - start} ms (API response) - ${data.response_time} ms (Elasticsearch response)`;
+          document.querySelector(".response-time").innerHTML = html;
+          // Append results to the DOM
+          document.querySelector(".results").innerHTML = "";
+          for (let i = 0; i < data.result.length; i++) {
+            const li = document.createElement("li");
+            li.innerHTML = data.result[i];
+            document.querySelector(".results").appendChild(li);
+          }
+        });      
+    });
+  </script>
+</html>
