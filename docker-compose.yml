@@ -7,6 +7,7 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - ${ES_PORT}:9200
+    restart: always
     environment:
       - discovery.type=single-node
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -18,6 +19,7 @@ services:
       - kibanadata:/usr/share/kibana/data
     ports:
       - ${KIBANA_PORT}:5601
+    restart: always
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
