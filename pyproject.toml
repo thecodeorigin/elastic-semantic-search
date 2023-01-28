@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "es-semantic-search"
+version = "1.0.0"
+description = ""
+authors = ["Tu nguyen <quangtupct@gmail.com>"]
+readme = "README.md"
+packages = [{include = "es_semantic_search"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^1.13.1"
+transformers = "^4.26.0"
+pyvi = "^0.1.1"
+elasticsearch = "^8.6.0"
+pandas = "^1.5.3"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
