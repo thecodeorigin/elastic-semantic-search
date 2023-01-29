@@ -4,9 +4,9 @@ from utils.vectorize import Vectorize
 
 
 class ElasticSearchService:
-  def __init__(self):
+  def __init__(self, hosts: str):
     self._index_name = "demo_simcse"
-    self._client = Elasticsearch(hosts="http://127.0.0.1:9200")
+    self._client = Elasticsearch(hosts=hosts)
 
   def create_index(self, mapping: dict):
     self._client.options(ignore_status=[404]).indices.delete(index=self._index_name)

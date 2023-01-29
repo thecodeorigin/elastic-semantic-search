@@ -25,8 +25,11 @@ RUN poetry install --no-dev --no-interaction --no-ansi --no-root --no-cache -vv
 # Copy app source
 COPY ./src .
 
+# Copy .env file
+COPY .env .
+
 # Load model from Hugging Face
-RUN python3 cache_model.py
+RUN python3 utils/loadmodel.py
 
 # Purge cache as it will make the final image large
 RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache

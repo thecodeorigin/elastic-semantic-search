@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template
-from utils.elasticsearch import ElasticSearchService
+from utils.es_service import ElasticSearchService
 
 app = Flask(__name__)
+es_host = "http://127.0.0.1:9200"
 
 @app.route("/", methods=["GET"])
 def home():
@@ -14,11 +15,11 @@ def search():
     method = request.args.get("method", "semantic")
     limit = request.args.get("limit", 100)
     if method == "sts":
-      return ElasticSearchService().semantic_search(text=query, limit=limit)
+      return ElasticSearchService(hosts=es_host).semantic_search(text=query, limit=limit)
     elif method == "fts":
-      return ElasticSearchService().fulltext_search(text=query, limit=limit)
+      return ElasticSearchService(hosts=es_host).fulltext_search(text=query, limit=limit)
     elif method == "fz":
-      return ElasticSearchService().fuzzy_search(text=query, limit=limit)
+      return ElasticSearchService(hosts=es_host).fuzzy_search(text=query, limit=limit)
   except Exception as e:
     print(e)
   return {}
@@ -60,9 +61,3 @@ def index_data():
       docs = []
       print("Indexed {} documents.".format(count))
   print("Finished indexing")
-
-@app.route("/cache-model", methods=["POST"])
-def cache_model():
-  print("Caching model...")
-  Vectorize(sentences=["hehe"]).handle()
-  print("Finished caching model")
