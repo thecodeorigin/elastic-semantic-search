@@ -50,7 +50,7 @@
           document.querySelector(".results").innerHTML = "";
           for (let i = 0; i < data.result.length; i++) {
             const li = document.createElement("li");
-            li.innerHTML = data.result[i];
+            li.innerHTML = `${data.result[i].title} (${data.result[i].score})`;
             document.querySelector(".results").appendChild(li);
           }
         });      
