@@ -23,12 +23,12 @@ RUN poetry install --no-dev --no-interaction --no-ansi --no-root --no-cache -vv
 
 
 # Copy app source
-COPY . .
+COPY ./src .
 
 # Load model from Hugging Face
-RUN python3 src/cache_model.py
+RUN python3 cache_model.py
 
 # Purge cache as it will make the final image large
 RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache
 
-CMD [ "python3", "-m" , "flask", "--app=src/start_be", "run", "--host=0.0.0.0"]
+CMD [ "python3", "-m" , "flask", "--app=app", "run", "--host=0.0.0.0"]
