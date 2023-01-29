@@ -11,10 +11,14 @@ def home():
 def search():
   try:
     query = request.args.get("q", "")
-    if not query:
-      return {}
-    return ElasticSearchService().semantic_search(text=query)
+    method = request.args.get("method", "semantic")
+    limit = request.args.get("limit", 100)
+    if method == "sts":
+      return ElasticSearchService().semantic_search(text=query, limit=limit)
+    elif method == "fts":
+      return ElasticSearchService().fulltext_search(text=query, limit=limit)
+    elif method == "fz":
+      return ElasticSearchService().fuzzy_search(text=query, limit=limit)
   except Exception as e:
-    print("Encountered exception while search")
     print(e)
-    return {}
+  return {}

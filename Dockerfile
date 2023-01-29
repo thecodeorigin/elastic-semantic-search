@@ -21,13 +21,14 @@ RUN poetry config installer.max-workers 10
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-dev --no-interaction --no-ansi --no-root --no-cache -vv
 
-# Purge cache as it will make the final image large
-RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache
 
 # Copy app source
 COPY . .
 
 # Load model from Hugging Face
 RUN python3 src/cache_model.py
+
+# Purge cache as it will make the final image large
+RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache
 
 CMD [ "python3", "-m" , "flask", "--app=src/start_be", "run", "--host=0.0.0.0"]

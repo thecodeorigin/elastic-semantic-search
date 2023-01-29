@@ -6,7 +6,7 @@ from utils.vectorize import Vectorize
 class ElasticSearchService:
   def __init__(self):
     self._index_name = "demo_simcse"
-    self._client = Elasticsearch(hosts="http://elasticsearch:9200")
+    self._client = Elasticsearch(hosts="http://127.0.0.1:9200")
 
   def create_index(self, mapping: dict):
     self._client.options(ignore_status=[404]).indices.delete(index=self._index_name)
@@ -50,12 +50,53 @@ class ElasticSearchService:
         "includes": ["id", "title"]
       },
     )
+
+    return self._format_response(response)
+
+  def fulltext_search(self, text: str, limit: int = 100):
+    response = self._client.options(ignore_status=[404]).search(
+      index=self._index_name,
+      size=limit,
+      query={
+        "match": {
+          "title": text
+        }
+      },
+      source={
+        "includes": ["id", "title"]
+      },
+    )
+    
+    return self._format_response(response)
+
+  def fuzzy_search(self, text: str, limit: int = 100):
+    response = self._client.options(ignore_status=[404]).search(
+      index=self._index_name,
+      size=limit,
+      query={
+        "match": {
+          "title": {
+            "query": text,
+            "fuzziness": "AUTO"
+          }
+        }
+      },
+      source={
+        "includes": ["id", "title"]
+      },
+    )
+
+    return self._format_response(response)
+
+  def _format_response(self, response: dict):
     result = []
-    response_time = response['took']
 
     for hit in response["hits"]["hits"]:
-        result.append(hit["_source"]['title'])
+        result.append({
+          "title": hit["_source"]["title"],
+          "score": hit["_score"],
+        })
     return {
-      "response_time": response_time,
+      "response_time": response['took'],
       "result": result
     }
