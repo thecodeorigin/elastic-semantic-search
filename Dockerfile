@@ -32,6 +32,6 @@ COPY .env .
 RUN python3 utils/loadmodel.py
 
 # Purge cache as it will make the final image large
-RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache
+RUN pip cache purge && rm -rf ~/.cache/pypoetry/artifacts && rm -rf ~/.cache/pypoetry/cache && rm -rf ~/.cache/huggingface
 
 CMD [ "python3", "-m" , "flask", "--app=app", "run", "--host=0.0.0.0"]

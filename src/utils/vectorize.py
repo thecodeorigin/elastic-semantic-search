@@ -4,7 +4,7 @@ from transformers import AutoModel, AutoTokenizer, PhobertTokenizer, RobertaMode
 from transformers.modeling_outputs import BaseModelOutputWithPoolingAndCrossAttentions
 from pyvi.ViTokenizer import tokenize
 from transformers import logging
-import time
+import os
 
 class Vectorize:
   MODEL_NAME = "VoVanPhuc/sup-SimCSE-VietNamese-phobert-base"
@@ -20,23 +20,20 @@ class Vectorize:
     https://huggingface.co/docs/transformers/v4.26.0/en/model_doc/roberta#transformers.RobertaModel
     PhoBert is based on RoBERTa
     """
-    start = time.time()
-    phobert_tokenizer: PhobertTokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=self.MODEL_NAME)
+
+    current_folder = os.path.dirname(os.path.realpath(__file__))
+    model_folder = os.path.join(current_folder, "model")
+    phobert_tokenizer: PhobertTokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=model_folder)
     sentences = [tokenize(sentence) for sentence in self._input_sentences]
-    
     inputs = phobert_tokenizer(sentences, padding=True, truncation=True, return_tensors="pt").to(self._device)
-    end = time.time()
-    print(f"Tokenize time: {end - start}")
-    start = time.time()
     vectors = self._embed_inputs(inputs)
-    end = time.time()
-    print(f"Embedding time: {end - start}")
     return vectors
 
   def _embed_inputs(self, inputs):
-    phobert_model: RobertaModel = AutoModel.from_pretrained(pretrained_model_name_or_path=self.MODEL_NAME)
+    current_folder = os.path.dirname(os.path.realpath(__file__))
+    model_folder = os.path.join(current_folder, "model")
+    phobert_model: RobertaModel = AutoModel.from_pretrained(pretrained_model_name_or_path=model_folder)
     phobert_model = phobert_model.to(self._device)
-
     with no_grad():
       phobert_model_output: BaseModelOutputWithPoolingAndCrossAttentions = phobert_model(
         **inputs, output_hidden_states=True, return_dict=True
