@@ -20,10 +20,17 @@ class Vectorize:
     https://huggingface.co/docs/transformers/v4.26.0/en/model_doc/roberta#transformers.RobertaModel
     PhoBert is based on RoBERTa
     """
+    start = time.time()
     phobert_tokenizer: PhobertTokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=self.MODEL_NAME)
     sentences = [tokenize(sentence) for sentence in self._input_sentences]
+    
     inputs = phobert_tokenizer(sentences, padding=True, truncation=True, return_tensors="pt").to(self._device)
+    end = time.time()
+    print(f"Tokenize time: {end - start}")
+    start = time.time()
     vectors = self._embed_inputs(inputs)
+    end = time.time()
+    print(f"Embedding time: {end - start}")
     return vectors
 
   def _embed_inputs(self, inputs):
