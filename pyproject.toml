@@ -4,7 +4,6 @@ version = "1.0.0"
 description = ""
 authors = ["Tu nguyen <quangtupct@gmail.com>"]
 readme = "README.md"
-packages = [{include = "es_semantic_search"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
