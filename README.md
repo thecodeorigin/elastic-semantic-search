@@ -1,10 +1,10 @@
 # Semantic search in ElasticSearch using PhoBert
 
-Pre-trained SimeCSE_Vietnamese models are the state-of-the-art of Sentence Embeddings with Vietnamese :
+This is a simple implementation of semantic search into Elasticsearch:
 
-- SimeCSE_Vietnamese pre-training approach is based on [SimCSE](https://arxiv.org/abs/2104.08821) which optimizes the SimeCSE_Vietnamese pre-training procedure for more robust performance.
-- SimeCSE_Vietnamese encode input sentences using a pre-trained language model such as  [PhoBert](https://www.aclweb.org/anthology/2020.findings-emnlp.92/)
-- SimeCSE_Vietnamese works with both unlabeled and labeled data.
+- In this demo, we will use [PhoBert](https://www.aclweb.org/anthology/2020.findings-emnlp.92/), a pre-trained language models made specially for Vietnamese language.
+
+- Including in this demo is also a simple Flask server for you to have a quick demo on what the results would be.
 
 ## Getting started
 
