@@ -10,7 +10,7 @@ services:
         until curl --connect-timeout 5 --trace-time -s http://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 5; echo "Retrying..."; done;
         echo "Elasticsearch is up";
         echo "Setting kibana_system password";
-        until curl --connect-timeout 5 -s -X POST -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" http://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELASTIC_PASSWORD}\"}" | grep -q "^{}"; do sleep 5; done;
+        until curl --connect-timeout 5 -s -X POST -u "elastic:${ELASTIC_PASSWORD:-changeme}" -H "Content-Type: application/json" http://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD:-changeme}\"}" | grep -q "^{}"; do sleep 5; done;
         echo "All done!";
       '
   elasticsearch:
@@ -25,7 +25,7 @@ services:
     restart: always
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
       - xpack.security.enabled=true
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
 
@@ -41,7 +41,7 @@ services:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD:-changeme}
 
   flask:
     container_name: es-semantic-flask
