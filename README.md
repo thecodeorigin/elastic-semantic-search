@@ -1,4 +1,4 @@
-# Semantic search in ElasticSearch using PhoBert
+# Vietnamese Semantic search in ElasticSearch using PhoBert
 
 This is a simple implementation of semantic search into Elasticsearch:
 
@@ -32,27 +32,13 @@ sh cmd.run.all.sh
 sh cmd.run.all-cuda.sh
 ```
 
-#### Stop all services
+#### Stop all services and clean up resources
 
 ```zsh
 sh cmd.stop.all.sh
 ```
 
-#### Index data to Elasicsearch (Using Docker)
-
-_This process can take a long time as it is indexing over 100000, you can try reducing the file size manually._
-
-```zsh
-docker exec -it es-semantic-flask python3 index_es.py
-```
-
-#### You may need this (lol)
-
-```zsh
-docker system prune -a
-```
-
-### Lightweight (Without Flask on Docker)
+### Lightweight (Without Flask server)
 
 #### Start core service (Elasticsearch + Kibana)
 
@@ -66,7 +52,7 @@ sh cmd.run.core.sh
 poetry install
 ```
 
-#### Load model locally
+#### Load Hugging model locally
 
 ```zsh
 python src/utils/loadmodel.py

@@ -7,8 +7,9 @@ app = Flask(__name__)
 load_dotenv()
 
 ES_HOST = str(os.getenv("ES_HOST", "127.0.0.1"))
-ES_PORT = int(os.getenv("ES_PORT", "9200"))
-host = f"http://{ES_HOST}:{ES_PORT}"
+ES_USERNAME = str(os.getenv("ELASTIC_USERNAME", "elastic"))
+ES_PASSWORD = str(os.getenv("ELASTIC_PASSWORD", "changeme"))
+host = f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:9200"
 
 @app.route("/", methods=["GET"])
 def home():
