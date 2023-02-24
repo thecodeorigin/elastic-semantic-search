@@ -39,7 +39,7 @@ if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.realpath(__file__))
     data_folder = os.path.join(current_dir, 'data', 'title.csv')
     df = pd.read_csv(data_folder).fillna(' ')
-
+    limit = int(input("Enter the number of rows to index: "))
     for _, row in df.iterrows():
       count += 1
       item = {
@@ -52,6 +52,8 @@ if __name__ == "__main__":
         es_service.refresh_index()
         docs = []
         print("Indexed {} documents.".format(count))
+        if count >= limit:
+          break
     print("3. Finished indexing")
   except KeyboardInterrupt:
     print("Indexing interrupted")

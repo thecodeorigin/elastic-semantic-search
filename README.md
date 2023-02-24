@@ -72,6 +72,12 @@ python src/index_es.py
 python3 -m flask --app=app run --host=0.0.0.0
 ```
 
+## Clean up resources
+
+```zsh
+sh cmd.run.clean.sh
+```
+
 ## Usage
 
 Access the site at <http://127.0.0.1:5000>
