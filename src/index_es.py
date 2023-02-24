@@ -39,7 +39,9 @@ if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.realpath(__file__))
     data_folder = os.path.join(current_dir, 'data', 'title.csv')
     df = pd.read_csv(data_folder).fillna(' ')
-    limit = int(input("Enter the number of rows to index: "))
+    limit = int(input("Enter the number of rows to index (minimum 1000): "))
+    if  limit < 1000:
+      limit = 1000
     for _, row in df.iterrows():
       count += 1
       item = {

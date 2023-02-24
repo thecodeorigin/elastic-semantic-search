@@ -14,7 +14,7 @@ WORKDIR /app
 
 # Disable virtualenv creation
 RUN poetry config virtualenvs.create false
-# Set max workers to 10 (default: number of cores + 4), this could cause max connection pool errors
+# Set max workers to 10 (default: number of cores + 4) to prevent cause max connection pool errors
 RUN poetry config installer.max-workers 10
 
 # Install dependencies
@@ -26,7 +26,7 @@ RUN poetry install --no-dev --no-interaction --no-ansi --no-root --no-cache -vv
 COPY ./src .
 
 # Copy .env file
-COPY .env .
+COPY .env* .
 
 # Load model from Hugging Face
 RUN python3 utils/loadmodel.py
